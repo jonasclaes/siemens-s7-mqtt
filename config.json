@@ -1,0 +1,13 @@
+{
+    "$schema": "./schema.json",
+    "mqtt": {
+        "url": "mqtt://localhost:1883"
+    },
+    "s7": {},
+    "lights": [
+        {
+            "type": "light",
+            "id": "light1"
+        }
+    ]
+}
