@@ -1,13 +1,65 @@
 {
-    "$schema": "./schema.json",
+    "$schema": "./config.schema.json",
     "mqtt": {
-        "url": "mqtt://localhost:1883"
+        "url": "mqtt://mosquitto:mosquitto@homeassistant.local:1883"
     },
-    "s7": {},
-    "lights": [
+    "controllers": [
         {
-            "type": "light",
-            "id": "light1"
+            "s7": {
+                "host": "192.168.178.15",
+                "port": 102,
+                "rack": 0,
+                "slot": 1
+            },
+            "devices": [
+                {
+                    "type": "light",
+                    "id": "B4SNy04ftn4uKizz15kb4",
+                    "friendlyName": "Light 1",
+                    "command": {
+                        "on": {
+                            "address": "DB1,X0.0"
+                        },
+                        "off": {
+                            "address": "DB1,X0.1"
+                        }
+                    },
+                    "status": {
+                        "on": {
+                            "address": "DB1,X2.0"
+                        }
+                    }
+                },
+                {
+                    "type": "dimmableLight",
+                    "id": "o8P-B_ByDTsextr9EaNnQ",
+                    "friendlyName": "Light 2",
+                    "command": {
+                        "on": {
+                            "address": "DB1,X4.0"
+                        },
+                        "off": {
+                            "address": "DB1,X4.1"
+                        },
+                        "brightness": {
+                            "address": "DB1,X4.2"
+                        }
+                    },
+                    "data": {
+                        "brightness": {
+                            "address": "DB1,B6"
+                        }
+                    },
+                    "status": {
+                        "on": {
+                            "address": "DB1,X8.0"
+                        },
+                        "brightness": {
+                            "address": "DB1,B9"
+                        }
+                    }
+                }
+            ]
         }
     ]
 }

@@ -1,0 +1,232 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://github.com/jonasclaes/siemens-s7-mqtt/config.schema.json",
+    "title": "Siemens S7 MQTT Configuration",
+    "description": "Configuration for the Siemens S7 MQTT integration.",
+    "type": "object",
+    "required": [
+        "mqtt",
+        "controllers"
+    ],
+    "properties": {
+        "mqtt": {
+            "$ref": "#/definitions/mqtt"
+        },
+        "controllers": {
+            "$ref": "#/definitions/controllers"
+        }
+    },
+    "definitions": {
+        "mqtt": {
+            "type": "object",
+            "description": "MQTT configuration",
+            "required": [
+                "url"
+            ],
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "description": "MQTT broker URL"
+                }
+            }
+        },
+        "controllers": {
+            "type": "array",
+            "description": "List of controllers to use",
+            "items": {
+                "$ref": "#/definitions/controller"
+            }
+        },
+        "controller": {
+            "type": "object",
+            "required": [
+                "s7",
+                "devices"
+            ],
+            "properties": {
+                "s7": {
+                    "$ref": "#/definitions/s7"
+                },
+                "devices": {
+                    "$ref": "#/definitions/devices"
+                }
+            }
+        },
+        "s7": {
+            "type": "object",
+            "description": "S7 configuration",
+            "required": [
+                "host"
+            ],
+            "properties": {
+                "host": {
+                    "type": "string",
+                    "description": "IP address or hostname of the S7 PLC"
+                },
+                "port": {
+                    "type": "integer",
+                    "description": "Port number for S7 communication",
+                    "default": 102
+                },
+                "rack": {
+                    "type": "integer",
+                    "description": "Rack number for S7 communication",
+                    "default": 0
+                },
+                "slot": {
+                    "type": "integer",
+                    "description": "Slot number for S7 communication",
+                    "default": 1
+                }
+            }
+        },
+        "devices": {
+            "type": "array",
+            "description": "List of devices to control/expose",
+            "items": {
+                "anyOf": [
+                    {
+                        "$ref": "#/definitions/light"
+                    },
+                    {
+                        "$ref": "#/definitions/dimmableLight"
+                    }
+                ]
+            }
+        },
+        "light": {
+            "type": "object",
+            "required": [
+                "type",
+                "id",
+                "friendlyName",
+                "command",
+                "status"
+            ],
+            "properties": {
+                "type": {
+                    "enum": [
+                        "light"
+                    ]
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the light"
+                },
+                "friendlyName": {
+                    "type": "string",
+                    "description": "Friendly name for the light"
+                },
+                "command": {
+                    "type": "object",
+                    "required": [
+                        "on",
+                        "off"
+                    ],
+                    "properties": {
+                        "on": {
+                            "$ref": "#/definitions/endpoint"
+                        },
+                        "off": {
+                            "$ref": "#/definitions/endpoint"
+                        }
+                    }
+                },
+                "status": {
+                    "type": "object",
+                    "required": [
+                        "on"
+                    ],
+                    "properties": {
+                        "on": {
+                            "$ref": "#/definitions/endpoint"
+                        }
+                    }
+                }
+            }
+        },
+        "dimmableLight": {
+            "type": "object",
+            "required": [
+                "type",
+                "id",
+                "friendlyName",
+                "command",
+                "data",
+                "status"
+            ],
+            "properties": {
+                "type": {
+                    "enum": [
+                        "dimmableLight"
+                    ]
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the light"
+                },
+                "friendlyName": {
+                    "type": "string",
+                    "description": "Friendly name for the light"
+                },
+                "command": {
+                    "type": "object",
+                    "required": [
+                        "on",
+                        "off",
+                        "brightness"
+                    ],
+                    "properties": {
+                        "on": {
+                            "$ref": "#/definitions/endpoint"
+                        },
+                        "off": {
+                            "$ref": "#/definitions/endpoint"
+                        },
+                        "brightness": {
+                            "$ref": "#/definitions/endpoint"
+                        }
+                    }
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "brightness"
+                    ],
+                    "properties": {
+                        "brightness": {
+                            "$ref": "#/definitions/endpoint"
+                        }
+                    }
+                },
+                "status": {
+                    "type": "object",
+                    "required": [
+                        "on",
+                        "brightness"
+                    ],
+                    "properties": {
+                        "on": {
+                            "$ref": "#/definitions/endpoint"
+                        },
+                        "brightness": {
+                            "$ref": "#/definitions/endpoint"
+                        }
+                    }
+                }
+            }
+        },
+        "endpoint": {
+            "type": "object",
+            "required": [
+                "address"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "description": "Address of the S7 variable (e.g., 'DB1,X0.0')"
+                }
+            }
+        }
+    }
+}
